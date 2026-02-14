@@ -29,7 +29,7 @@ export default function Signup() {
       if (success) {
         toast({
           title: 'Account created!',
-          description: 'Welcome to DWOMS.',
+          description: 'Welcome to UdyogSetu.',
         });
         navigate('/dashboard');
       } else {
@@ -61,7 +61,7 @@ export default function Signup() {
           </div>
           <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
           <CardDescription>
-            Join DWOMS to manage your factory operations
+            Join UdyogSetu to manage your factory operations
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -116,8 +116,8 @@ export default function Signup() {
                 </SelectContent>
               </Select>
             </div>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full h-12 text-base"
               disabled={isLoading}
             >

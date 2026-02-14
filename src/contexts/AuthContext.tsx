@@ -22,10 +22,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = useCallback(async (email: string, password: string): Promise<boolean> => {
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     const users = getStorageItem<User[]>(STORAGE_KEYS.USERS, []);
     const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    
+
     if (foundUser) {
       // For demo purposes, any password works
       // In production, you'd verify against hashed passwords
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setStorageItem(STORAGE_KEYS.CURRENT_USER, foundUser);
       return true;
     }
-    
+
     return false;
   }, []);
 
@@ -44,14 +44,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     role: UserRole
   ): Promise<boolean> => {
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     const users = getStorageItem<User[]>(STORAGE_KEYS.USERS, []);
-    
+
     // Check if email already exists
     if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
       return false;
     }
-    
+
     const newUser: User = {
       id: `user-${Date.now()}`,
       name,
@@ -59,12 +59,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       role,
       createdAt: new Date().toISOString(),
     };
-    
+
     users.push(newUser);
     setStorageItem(STORAGE_KEYS.USERS, users);
     setUser(newUser);
     setStorageItem(STORAGE_KEYS.CURRENT_USER, newUser);
-    
+
     return true;
   }, []);
 
@@ -73,8 +73,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
   }, []);
 
+  const updateProfile = useCallback(async (data: Partial<User>): Promise<boolean> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    if (!user) return false;
+
+    const updatedUser = { ...user, ...data };
+    setUser(updatedUser);
+    setStorageItem(STORAGE_KEYS.CURRENT_USER, updatedUser);
+
+    // Update in users list as well
+    const users = getStorageItem<User[]>(STORAGE_KEYS.USERS, []);
+    const userIndex = users.findIndex(u => u.id === user.id);
+    if (userIndex !== -1) {
+      users[userIndex] = updatedUser;
+      setStorageItem(STORAGE_KEYS.USERS, users);
+    }
+    return true;
+  }, [user]);
+
+  const updatePassword = useCallback(async (password: string): Promise<boolean> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    // Since we don't actually store passwords in this dummy auth, we just return true
+    // In a real app, this would update the backend
+    return true;
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, isLoading, updateProfile, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );

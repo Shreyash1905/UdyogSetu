@@ -31,7 +31,7 @@ export default function Login() {
       } else {
         toast({
           title: 'Login failed',
-          description: 'Invalid email or password. Try: admin@dwoms.com',
+          description: 'Invalid email or password. Try: admin@udyogsetu.com',
           variant: 'destructive',
         });
       }
@@ -50,14 +50,16 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-primary">
-              <Factory className="w-8 h-8 text-primary-foreground" />
-            </div>
+          <div className="flex justify-center mb-6">
+            <img
+              src="/assets/images/UDSTBR.png"
+              alt="UdyogSetu Logo"
+              className="h-16 w-auto"
+            />
           </div>
-          <CardTitle className="text-2xl font-bold">DWOMS</CardTitle>
-          <CardDescription>
-            Digital Workflow & Operations Management System
+          <CardTitle className="text-2xl font-bold">UdyogSetu</CardTitle>
+          <CardDescription className="text-base mt-2">
+            Welcome to UdyogSetu – Your bridge to smarter manufacturing operations
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -67,7 +69,7 @@ export default function Login() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@dwoms.com"
+                placeholder="admin@udyogsetu.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -86,8 +88,8 @@ export default function Login() {
                 className="h-12"
               />
             </div>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full h-12 text-base"
               disabled={isLoading}
             >
@@ -101,16 +103,6 @@ export default function Login() {
               )}
             </Button>
           </form>
-          
-          <div className="mt-6 p-4 bg-muted rounded-lg">
-            <p className="text-sm font-medium text-muted-foreground mb-2">Demo Accounts:</p>
-            <div className="text-xs space-y-1 font-mono">
-              <p>admin@dwoms.com (Admin)</p>
-              <p>supervisor@dwoms.com (Supervisor)</p>
-              <p>worker1@dwoms.com (Worker)</p>
-              <p>client@dwoms.com (Client - Read Only)</p>
-            </div>
-          </div>
 
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Don't have an account?{' '}

@@ -7,8 +7,28 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
+  department?: string;
+  supervisorId?: string;
+  profileImageURL?: string;
   createdBy?: string;
   createdAt: string;
+}
+
+// Leave Application Interface
+export interface LeaveApplication {
+  id: string;
+  workerId: string;
+  workerName: string;
+  department: string;
+  supervisorId: string;
+  leaveType: 'Casual' | 'Sick' | 'Paid';
+  startDate: string;
+  endDate: string;
+  reason: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  appliedAt: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
 }
 
 // Production entry interface
@@ -64,6 +84,26 @@ export interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
   signup: (name: string, email: string, password: string, role: UserRole) => Promise<boolean>;
+  updateProfile: (data: Partial<User>) => Promise<boolean>;
+  updatePassword: (password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
+}
+
+export interface ClientOrder {
+  id: string;
+  clientId: string;
+  clientName: string;
+  materialName: string;
+  quantity: number;
+  unit: string;
+  requiredDate: string;
+  department: string;
+  notes?: string;
+  status: 'Pending' | 'Approved' | 'Rejected' | 'In Progress' | 'Completed';
+  assignedSupervisorId?: string;
+  assignedSupervisorName?: string;
+  approvedBy?: string;
+  approvedAt?: string;
+  createdAt: string;
 }

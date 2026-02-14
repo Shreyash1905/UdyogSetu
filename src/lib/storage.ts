@@ -1,10 +1,12 @@
 // Local storage keys
 const STORAGE_KEYS = {
-  USERS: 'dwoms_users',
-  CURRENT_USER: 'dwoms_current_user',
-  PRODUCTION_ENTRIES: 'dwoms_production_entries',
-  TASKS: 'dwoms_tasks',
-  INVENTORY: 'dwoms_inventory',
+  USERS: 'udyogsetu_users',
+  CURRENT_USER: 'udyogsetu_current_user',
+  PRODUCTION_ENTRIES: 'udyogsetu_production_entries',
+  TASKS: 'udyogsetu_tasks',
+  INVENTORY: 'udyogsetu_inventory',
+  LEAVES: 'udyogsetu_leaves',
+  CLIENT_ORDERS: 'udyogsetu_client_orders',
 } as const;
 
 // Generic storage helpers

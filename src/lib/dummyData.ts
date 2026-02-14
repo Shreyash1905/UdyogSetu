@@ -1,4 +1,4 @@
-import type { User, ProductionEntry, Task, InventoryItem } from '@/types/dwoms';
+import type { User, ProductionEntry, Task, InventoryItem, LeaveApplication, ClientOrder } from '@/types/dwoms';
 import { STORAGE_KEYS, getStorageItem, setStorageItem } from '@/lib/storage';
 
 // Generate unique IDs
@@ -9,46 +9,54 @@ export const dummyUsers: User[] = [
   {
     id: 'admin-001',
     name: 'Rajesh Kumar',
-    email: 'admin@dwoms.com',
+    email: 'admin@udyogsetu.com',
     role: 'admin',
+    department: 'Management',
     createdAt: '2024-01-01T00:00:00Z',
   },
   {
     id: 'supervisor-001',
     name: 'Priya Sharma',
-    email: 'supervisor@dwoms.com',
+    email: 'supervisor@udyogsetu.com',
     role: 'supervisor',
+    department: 'Production A',
     createdBy: 'admin-001',
     createdAt: '2024-01-02T00:00:00Z',
   },
   {
     id: 'worker-001',
     name: 'Amit Singh',
-    email: 'worker1@dwoms.com',
+    email: 'worker1@udyogsetu.com',
     role: 'worker',
+    department: 'Production A',
+    supervisorId: 'supervisor-001',
     createdBy: 'admin-001',
     createdAt: '2024-01-03T00:00:00Z',
   },
   {
     id: 'worker-002',
     name: 'Sunita Devi',
-    email: 'worker2@dwoms.com',
+    email: 'worker2@udyogsetu.com',
     role: 'worker',
+    department: 'Production A',
+    supervisorId: 'supervisor-001',
     createdBy: 'admin-001',
     createdAt: '2024-01-03T00:00:00Z',
   },
   {
     id: 'worker-003',
     name: 'Ramesh Yadav',
-    email: 'worker3@dwoms.com',
+    email: 'worker3@udyogsetu.com',
     role: 'worker',
+    department: 'Logistics',
+    supervisorId: 'supervisor-001', // Assigned for demo visibility
     createdBy: 'admin-001',
     createdAt: '2024-01-04T00:00:00Z',
   },
   {
     id: 'client-001',
     name: 'Vikram Industries',
-    email: 'client@dwoms.com',
+    email: 'client@udyogsetu.com',
     role: 'client',
     createdBy: 'admin-001',
     createdAt: '2024-01-05T00:00:00Z',
@@ -206,22 +214,97 @@ export const dummyInventory: InventoryItem[] = [
   },
 ];
 
+// Dummy leaves
+export const dummyLeaves: LeaveApplication[] = [
+  {
+    id: generateId(),
+    workerId: 'worker-001',
+    workerName: 'Amit Singh',
+    department: 'Production A',
+    supervisorId: 'supervisor-001',
+    leaveType: 'Sick',
+    startDate: '2024-12-20',
+    endDate: '2024-12-21',
+    reason: 'High fever and cold',
+    status: 'Pending',
+    appliedAt: '2024-12-18T10:00:00Z',
+  },
+  {
+    id: generateId(),
+    workerId: 'worker-002',
+    workerName: 'Sunita Devi',
+    department: 'Production A',
+    supervisorId: 'supervisor-001',
+    leaveType: 'Casual',
+    startDate: '2024-12-25',
+    endDate: '2024-12-26',
+    reason: 'Family function',
+    status: 'Approved',
+    appliedAt: '2024-12-15T09:00:00Z',
+    reviewedAt: '2024-12-16T11:00:00Z',
+    reviewedBy: 'supervisor-001',
+  },
+];
+
+// Dummy client orders
+export const dummyClientOrders: ClientOrder[] = [
+  {
+    id: generateId(),
+    clientId: 'client-001',
+    clientName: 'Vikram Industries',
+    materialName: 'Steel Rods High Grade',
+    quantity: 500,
+    unit: 'kg',
+    requiredDate: '2024-12-25',
+    department: 'Production A',
+    notes: 'Urgent requirement for new project',
+    status: 'Pending',
+    createdAt: '2024-12-16T09:00:00Z',
+  },
+  {
+    id: generateId(),
+    clientId: 'client-001',
+    clientName: 'Vikram Industries',
+    materialName: 'Copper Wires',
+    quantity: 200,
+    unit: 'meters',
+    requiredDate: '2024-12-30',
+    department: 'Production A',
+    status: 'Approved',
+    assignedSupervisorId: 'supervisor-001',
+    assignedSupervisorName: 'Priya Sharma',
+    approvedBy: 'admin-001',
+    approvedAt: '2024-12-16T10:00:00Z',
+    createdAt: '2024-12-15T14:00:00Z',
+  },
+];
+
 // Initialize dummy data in localStorage
 export function initializeDummyData(): void {
   // Only initialize if data doesn't exist
-  if (getStorageItem(STORAGE_KEYS.USERS, []).length === 0) {
+  // Force update users to include department structure if old data exists
+  const currentUsers = getStorageItem<User[]>(STORAGE_KEYS.USERS, []);
+  if (currentUsers.length === 0 || !currentUsers[0].department) {
     setStorageItem(STORAGE_KEYS.USERS, dummyUsers);
   }
-  
+
   if (getStorageItem(STORAGE_KEYS.PRODUCTION_ENTRIES, []).length === 0) {
     setStorageItem(STORAGE_KEYS.PRODUCTION_ENTRIES, dummyProductionEntries);
   }
-  
+
   if (getStorageItem(STORAGE_KEYS.TASKS, []).length === 0) {
     setStorageItem(STORAGE_KEYS.TASKS, dummyTasks);
   }
-  
+
   if (getStorageItem(STORAGE_KEYS.INVENTORY, []).length === 0) {
     setStorageItem(STORAGE_KEYS.INVENTORY, dummyInventory);
+  }
+
+  if (getStorageItem(STORAGE_KEYS.LEAVES, []).length === 0) {
+    setStorageItem(STORAGE_KEYS.LEAVES, dummyLeaves);
+  }
+
+  if (getStorageItem(STORAGE_KEYS.CLIENT_ORDERS, []).length === 0) {
+    setStorageItem(STORAGE_KEYS.CLIENT_ORDERS, dummyClientOrders);
   }
 }
